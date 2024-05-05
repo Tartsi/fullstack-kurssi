@@ -18,9 +18,10 @@ const StatisticLine = (props) => {
   const value = props.value
 
   return (
-    <div>
-      {text} {value}
-    </div>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 
 }
@@ -29,30 +30,32 @@ const Statistics = (props) => {
 
   if (props.good === 0 && props.neutral === 0 && props.bad === 0) {
     return(
-      <div>
+      <>
         <p>No feedback given</p>
-      </div>
+      </>
     )
   }
 
   return (
-    <div>
-      <StatisticLine text={'good'} value={props.good}/>
-      <StatisticLine text={'neutral'} value={props.neutral}/>
-      <StatisticLine text={'bad'} value={props.bad}/>
-      <StatisticLine
-        text={'total'}
-        value={props.good + props.bad + props.neutral}
-      />
-      <StatisticLine
-        text={'average'}
-        value={(props.goodValue + props.neutralValue + props.badValue) / (props.good + props.bad + props.neutral)}
-      />
-      <StatisticLine
-        text={'positive'}
-        value={props.good / (props.good + props.bad + props.neutral) * 100 + '%'}
-      />
-    </div>
+    <table>
+      <tbody>
+        <StatisticLine text={'good'} value={props.good}/>
+        <StatisticLine text={'neutral'} value={props.neutral}/>
+        <StatisticLine text={'bad'} value={props.bad}/>
+        <StatisticLine
+          text={'total'}
+          value={props.good + props.bad + props.neutral}
+        />
+        <StatisticLine
+          text={'average'}
+          value={(props.goodValue + props.neutralValue + props.badValue) / (props.good + props.bad + props.neutral)}
+        />
+        <StatisticLine
+          text={'positive'}
+          value={props.good / (props.good + props.bad + props.neutral) * 100 + '%'}
+        />
+      </tbody>
+    </table>
   )
 
 }
