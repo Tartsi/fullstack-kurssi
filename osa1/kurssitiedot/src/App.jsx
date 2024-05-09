@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 const Header = (props) => {
 
   return (
@@ -24,6 +26,30 @@ const Part = (props) => {
   
 }
 
+const Total = (props) => {
+
+  const { parts } = props
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+
+    let sum = 0;
+
+    parts.forEach(part => {
+      sum += part[2];
+    });
+    
+    setTotal(sum);
+  }, [parts]);
+
+  return (
+    <div>
+      total of {total} excercises
+    </div>
+  )
+
+}
+
 const Content = (props) => {
 
   const { parts } = props
@@ -37,6 +63,7 @@ const Content = (props) => {
       {parts.map(part =>
         <Part key={part[0]} name={part[1]} excercise={part[2]}/>
       )}
+      <Total parts={parts}/>
     </div>
     </>
   )
@@ -79,6 +106,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
