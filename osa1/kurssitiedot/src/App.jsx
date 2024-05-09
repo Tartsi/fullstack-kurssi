@@ -29,18 +29,7 @@ const Part = (props) => {
 const Total = (props) => {
 
   const { parts } = props
-  const [total, setTotal] = useState(0)
-
-  useEffect(() => {
-
-    let sum = 0;
-
-    parts.forEach(part => {
-      sum += part[2];
-    });
-    
-    setTotal(sum);
-  }, [parts]);
+  const total = parts.reduce((sum, part) => sum + part[2], 0)
 
   return (
     <div>
