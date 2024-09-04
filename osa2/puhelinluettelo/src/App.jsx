@@ -38,7 +38,10 @@ const App = () => {
       number: newNumber
     }
 
-    setPersons(persons.concat(newPersonObject))
+    axios
+        .post('http://localhost:3001/persons', newPersonObject)
+        .then(setPersons(persons.concat(newPersonObject)))
+
     setNewName("")
     setNewNumber("")
   }
