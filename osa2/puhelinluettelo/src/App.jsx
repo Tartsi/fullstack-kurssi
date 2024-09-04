@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Person'
@@ -11,17 +11,13 @@ const App = () => {
   const [nameFilter, setNameFilter] = useState('')
   const [showAllPersons, setShowAllPersons] = useState(true)
 
-  const hook = () => {
-
-    axios
-        .get('http://localhost:3001/persons')
-        .then(response => {
-          setPersons(response.data)
-        })
-
-  }
-
-  useEffect(hook, [])
+  useEffect(() => {
+    personService
+      .getAllPersons()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
+  }, [])
 
   const addNewPerson = (event) => {
     event.preventDefault()
@@ -38,9 +34,11 @@ const App = () => {
       number: newNumber
     }
 
-    axios
-        .post('http://localhost:3001/persons', newPersonObject)
-        .then(setPersons(persons.concat(newPersonObject)))
+    personService
+      .addNewPerson(newPersonObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+      })
 
     setNewName("")
     setNewNumber("")
