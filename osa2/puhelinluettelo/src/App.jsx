@@ -13,6 +13,7 @@ const App = () => {
   const [nameFilter, setNameFilter] = useState('')
   const [showAllPersons, setShowAllPersons] = useState(true)
   const [notificationMessage, setNotificationMessage] = useState('No recent changes')
+  const [success, setSuccess] = useState(true)
 
   useEffect(() => {
     personService
@@ -37,13 +38,15 @@ const App = () => {
         setNotificationMessage(`Succesfully changed ${newName}'s number!`)
         })
         .catch(() => {
+          setSuccess(false)
           setNotificationMessage(
-            `Error occurred while trying to update ${newName}'s number`
+            `Could not find ${newName}'s number from the server`
           )
         })
       }
       setTimeout(() => {
         setNotificationMessage(null)
+        setSuccess(true)
       }, 5000);
       setNewName("")
       setNewNumber("")
@@ -61,7 +64,14 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNotificationMessage(`Succesfully added ${newPersonObject.name} to the phonebook!`)
       })
+      .catch(() => {
+        setSuccess(false)
+        setNotificationMessage(
+          `Error occurred while trying to add ${newPersonObject.name} to the phonebook`
+        )
+      })
     setTimeout(() => {
+      setSuccess(true)
       setNotificationMessage(null)
     }, 5000);
     setNewName("")
@@ -79,7 +89,14 @@ const App = () => {
       setPersons(persons.filter(person => person.id !== id))
       setNotificationMessage(`${personToBeDeleted.name} succesfully removed!`)
       })
+      .catch(() => {
+        setSuccess(false)
+        setNotificationMessage(
+          `Information of ${personToBeDeleted.name} has already been removed from the server`
+        )
+      })
       setTimeout(() => {
+        setSuccess(true)
         setNotificationMessage(null)
       }, 5000);
     }
@@ -107,7 +124,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={notificationMessage} success={success} />
       <Filter 
       value={nameFilter}
       onChange={handleNameFiltering}
