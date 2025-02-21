@@ -64,10 +64,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNotificationMessage(`Succesfully added ${newPersonObject.name} to the phonebook!`)
       })
-      .catch(() => {
+      .catch(error => {
         setSuccess(false)
         setNotificationMessage(
-          `Error occurred while trying to add ${newPersonObject.name} to the phonebook`
+          error.response.data.error
         )
       })
     setTimeout(() => {
