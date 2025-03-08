@@ -158,7 +158,7 @@ describe('most blogs', () => {
     assert.strictEqual(result, { author: listWithOneBlog[0].author, blogs: 1 })
   }
 
-  test('when list has multiple blogs equals the author of that'), () => {
+  test('when list has multiple blogs equals the author of that with most blogs'), () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs)
     assert.strictEqual(result, { author: 'Robert C. Martin', blogs: 3 })
   }
@@ -201,5 +201,65 @@ describe('most blogs', () => {
   test('when list has multiple blogs with same amount of blogs return one of them'), () => {
     const result = listHelper.mostBlogs(listWithMultipleSimilarLikedBlogs)
     assert.strictEqual(result, { author: 'Michael Chan', blogs: 1 })
+  }
+})
+
+describe('most likes', () => {
+  
+  const emptyList = []
+
+  test('of empty list is empty object'), () => {
+    const result = listHelper.mostLikes(emptyList)
+    assert.strictEqual(result, {})
+  }
+
+  test('when list has only one blog equals the author + likes of that'), () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    assert.strictEqual(result, { author: listWithOneBlog[0].author, likes: listWithOneBlog[0].likes })
+  }
+
+  test('when list has multiple blogs equals the author with most likes'), () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs)
+    assert.strictEqual(result, { author: 'Michael Chan', likes: 7 })
+  }
+
+  const listWithMultipleSimilarLikedBlogsFromDifferentAuthors = [
+    {
+      _id: "5a422a851b54a676234d17f7",
+      title: "React patterns",
+      author: "Michael Chan",
+      url: "https://reactpatterns.com/",
+      likes: 261121,
+      __v: 0
+    },
+    {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go To Statement Considered Harmful",
+      author: "Michael Chan",
+      url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+      likes: 26545754,
+      __v: 0
+    },
+    {
+      _id: "5a422b3a1b54a676234d17f9",
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+      likes: 2612,
+      __v: 0
+    },
+    {
+      _id: "5a422b3a1b54a676234d173453453535353f9",
+      title: "Canonical string reduction vol 2",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+      likes: 26545754,
+      __v: 0
+    },
+  ]
+
+  test('when list has multiple blogs with same amount of likes and different authors return one of them'), () => {
+    const result = listHelper.mostLikes(listWithMultipleSimilarLikedBlogsFromDifferentAuthors)
+    assert.strictEqual(result, { author: 'Michael Chan', likes: 26545754 })
   }
 })
