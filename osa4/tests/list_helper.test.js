@@ -139,8 +139,8 @@ describe('favorite blog', () => {
   ]
 
   test('when list has multiple blogs with same likes return one of them'), () => {
-    const result = listHelper.favoriteBlog(listWithMultipleBlogs)
-    assert.strictEqual(result, listWithMultipleBlogs[0])
+    const result = listHelper.favoriteBlog(listWithMultipleSimilarLikedBlogs)
+    assert.strictEqual(result, listWithMultipleSimilarLikedBlogs[0])
   }
 })
 
