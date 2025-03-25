@@ -51,6 +51,11 @@ const response = await api
     assert.strictEqual(response.body.length, initialBlogs.length)
 })
 
+test('unique identifier property of the blog posts is named id', async () => {
+    const response = await api.get('/api/blogs')
+    assert(response.body[0].id)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
