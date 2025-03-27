@@ -104,6 +104,32 @@ test('if title and url properties are missing, return 400 Bad Request', async ()
     .expect(400)
 })
 
+test('delete a blog post', async () => {
+  const newBlog = {
+    title: "Blog to delete",
+    author: "Author to delete",
+    url: "http://deleteblog.com",
+    likes: 0,
+  }
+
+  const addedBlogResponse = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogToDelete = addedBlogResponse.body
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await api.get('/api/blogs')
+
+  // Ultimately no blogs removed, as the deletion is made on a 'dummy' blog
+  assert.strictEqual(blogsAtEnd.body.length, initialBlogs.length)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
