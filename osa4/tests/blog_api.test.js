@@ -130,6 +130,10 @@ test('delete a blog post', async () => {
   assert.strictEqual(blogsAtEnd.body.length, initialBlogs.length)
 })
 
+test('already existing blogs can be modified', async () => {
+  
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
