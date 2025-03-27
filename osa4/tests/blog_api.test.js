@@ -76,6 +76,22 @@ test('a valid blog is added and increases blog amount by one', async () => {
       assert.strictEqual(response.body.length, initialBlogs.length + 1)
 })
 
+test('if likes property is missing, it will default to 0', async () => {
+  const newBlog = {
+    title: "no likes Blog",
+    author: "Author test",
+    url: "http://nolikes.com"
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  assert.strictEqual(response.body.likes, 0)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
