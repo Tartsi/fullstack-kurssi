@@ -131,7 +131,27 @@ test('delete a blog post', async () => {
 })
 
 test('already existing blogs can be modified', async () => {
-  
+
+  const blogsAtStart = await api.get('/api/blogs')
+  const blogToUpdate = blogsAtStart.body[0]
+
+  const updatedBlog = {
+    ...blogToUpdate,
+    likes: blogToUpdate.likes + 1,
+  }
+
+  const response = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  assert.strictEqual(response.body.likes, blogToUpdate.likes + 1)
+
+  const blogsAtEnd = await api.get('/api/blogs')
+  const updatedBlogFromDb = blogsAtEnd.body.find(blog => blog.id === blogToUpdate.id)
+  assert.strictEqual(updatedBlogFromDb.likes, blogToUpdate.likes + 1)
+
 })
 
 after(async () => {
