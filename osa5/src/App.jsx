@@ -19,7 +19,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
     }
-  });
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -30,6 +30,8 @@ const App = () => {
         password,
       });
 
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+
       blogService.setToken(user.token);
       setUser(user);
       setUsername("");
@@ -38,6 +40,12 @@ const App = () => {
       console.log("[DEBUG] Error occured when logging in!");
       console.log(exception);
     }
+  };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    window.localStorage.removeItem("loggedBlogappUser");
+    setUser(null);
   };
 
   const loginForm = () => (
@@ -64,6 +72,12 @@ const App = () => {
     </form>
   );
 
+  const logOutForm = () => (
+    <form onSubmit={handleLogout}>
+      <button type="submit">logout</button>
+    </form>
+  );
+
   return (
     <div>
       {!user && loginForm()}
@@ -71,6 +85,7 @@ const App = () => {
         <>
           <h2>blogs</h2>
           <p>{user.name} logged in </p>
+          {logOutForm()}
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
