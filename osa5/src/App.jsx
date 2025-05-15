@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import Message from "./components/Message";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -11,6 +12,8 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [blogUrl, setBlogUrl] = useState("");
   const [user, setUser] = useState(null);
+  const [type, setType] = useState(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -35,15 +38,19 @@ const App = () => {
         user: user,
       };
 
-      console.log("Sent blogObject:", blogObject);
       const returnedObject = await blogService.create(blogObject);
       setBlogs(blogs.concat(returnedObject));
       setTitle("");
       setAuthor("");
       setBlogUrl("");
+      setTimedMessage(
+        "success",
+        `${blogObject.title} by ${blogObject.author} added`
+      );
     } catch (exception) {
       console.log("Error occured when adding notes!");
       console.log(exception);
+      setTimedMessage("error", exception.response.data.error);
     }
   };
 
@@ -62,10 +69,11 @@ const App = () => {
       setUser(user);
       setUsername("");
       setPassword("");
+      setTimedMessage("success", `${user.username} logged in succesfully!`);
     } catch (exception) {
       console.log("[DEBUG] Error occured when logging in!");
       console.log(exception);
-      alert("Error when logging in! Reason: " + exception.response.data.error);
+      setTimedMessage("error", exception.response.data.error);
     }
   };
 
@@ -140,12 +148,28 @@ const App = () => {
     </form>
   );
 
+  const setTimedMessage = (type, message) => {
+    setType(type);
+    setMessage(message);
+    setTimeout(() => {
+      setType(null);
+      setMessage("");
+    }, 3000);
+  };
+
   return (
     <div>
-      {!user && loginForm()}
+      {!user && (
+        <>
+          <h2>log in to application</h2>
+          <Message type={type} message={message} />
+          {loginForm()}
+        </>
+      )}
       {user && (
         <>
           <h2>blogs</h2>
+          <Message type={type} message={message} />
           <p>{user.name} logged in </p>
           {logOutForm()}
           <h2>create new</h2>
