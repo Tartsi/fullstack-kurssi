@@ -39,9 +39,28 @@ const App = () => {
         `${blogObject.title} by ${blogObject.author} added`
       );
     } catch (exception) {
-      console.log("Error occured when adding notes!");
+      console.log("[DEBUG] Error occured when adding notes!");
       console.log(exception);
-      setTimedMessage("error", exception.response.data.error);
+      setTimedMessage("error: " + exception.response.data.error);
+    }
+  };
+
+  const likeBlog = async (blogObject) => {
+    try {
+      const returnedObject = await blogService.update(
+        blogObject.id,
+        blogObject
+      );
+      setBlogs(
+        blogs.map((blog) =>
+          blog.id !== returnedObject.id ? blog : returnedObject
+        )
+      );
+      setTimedMessage("success", `${returnedObject.title} updated`);
+    } catch (exception) {
+      console.log("[DEBUG] Error occured when updating notes!");
+      console.log(exception);
+      setTimedMessage("error: " + exception.response.data.error);
     }
   };
 
@@ -64,7 +83,7 @@ const App = () => {
     } catch (exception) {
       console.log("[DEBUG] Error occured when logging in!");
       console.log(exception);
-      setTimedMessage("error", exception.response.data.error);
+      setTimedMessage("error: " + exception.response.data.error);
     }
   };
 
@@ -138,7 +157,7 @@ const App = () => {
           {noteForm()}
           <br />
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} likeBlog={likeBlog} user={user} />
           ))}
         </>
       )}
