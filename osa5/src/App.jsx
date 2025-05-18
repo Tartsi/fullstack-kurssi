@@ -64,6 +64,24 @@ const App = () => {
     }
   };
 
+  const deleteBlog = async (blogObject) => {
+    try {
+      if (
+        window.confirm(
+          `Remove blog ${blogObject.title} by ${blogObject.author}`
+        )
+      ) {
+        await blogService.remove(blogObject.id);
+        setBlogs(blogs.filter((blog) => blog.id !== blogObject.id));
+        setTimedMessage("success", `${blogObject.title} removed`);
+      }
+    } catch (exception) {
+      console.log("[DEBUG] Error occured when deleting notes!");
+      console.log(exception);
+      setTimedMessage("error: " + exception.response.data.error);
+    }
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -159,7 +177,13 @@ const App = () => {
           {[...blogs]
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} likeBlog={likeBlog} user={user} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                likeBlog={likeBlog}
+                deleteBlog={deleteBlog}
+                user={user}
+              />
             ))}
         </>
       )}
