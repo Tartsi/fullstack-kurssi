@@ -16,7 +16,8 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.2.0",
-    "osa4": "file:"
+    "osa4": "file:",
+    "prop-types": "^15.8.1"
   },
   "watch": [
     "index.js"

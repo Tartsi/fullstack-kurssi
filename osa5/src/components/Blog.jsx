@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
   const [visible, setVisible] = useState(false);
@@ -32,12 +33,6 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
     });
   };
 
-  const logging = (event) => {
-    event.preventDefault();
-    console.log("blog.user:", blog.user);
-    console.log("logged in user:", user);
-  };
-
   return (
     <div style={blogStyle}>
       <div>
@@ -62,6 +57,11 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
       )}
     </div>
   );
+};
+
+Blog.propTypes = {
+  likeBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
 };
 
 export default Blog;

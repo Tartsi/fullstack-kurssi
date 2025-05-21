@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Message = ({ message, type }) => {
   if (!message) {
@@ -16,6 +17,11 @@ const Message = ({ message, type }) => {
   };
 
   return <div style={messageStyle}>{message}</div>;
+};
+
+Message.propTypes = {
+  message: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["success", "error"]),
 };
 
 export default Message;
