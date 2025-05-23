@@ -43,10 +43,45 @@ test("blog displays url, likes and user after 'view'-button pressed", async () =
   const button = screen.getByText("view");
   await userPress.click(button);
 
-  console.log("Debug here:");
-  screen.debug();
-
   expect(screen.getByText(/testblog.com/)).toBeInTheDocument();
   expect(screen.getByText(/likes 15/)).toBeInTheDocument();
   expect(screen.getByText(/testuser/)).toBeInTheDocument();
+});
+
+test("if like button is pressed twice, function is called twice", async () => {
+  const testUser = {
+    username: "testuser",
+    id: "12345",
+  };
+
+  const blog = {
+    title: "Test Blog",
+    author: "Test Author",
+    url: "testblog.com",
+    likes: 15,
+    user: { username: "testuser" },
+  };
+
+  const mockHandler = vi.fn();
+
+  render(
+    <Blog
+      blog={blog}
+      likeBlog={mockHandler}
+      deleteBlog={() => {}}
+      user={testUser}
+    />
+  );
+
+  const user = userEvent.setup();
+  const button = screen.getByText("view");
+  await user.click(button);
+
+  console.log("Debug here");
+  screen.debug();
+
+  const likeButton = screen.getByText("like");
+  await user.click(likeButton);
+  await user.click(likeButton);
+  expect(mockHandler.mock.calls).toHaveLength(2);
 });
