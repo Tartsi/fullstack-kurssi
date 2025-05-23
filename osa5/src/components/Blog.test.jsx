@@ -77,9 +77,6 @@ test("if like button is pressed twice, function is called twice", async () => {
   const button = screen.getByText("view");
   await user.click(button);
 
-  console.log("Debug here");
-  screen.debug();
-
   const likeButton = screen.getByText("like");
   await user.click(likeButton);
   await user.click(likeButton);
