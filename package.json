@@ -1,0 +1,20 @@
+{
+  "name": "fullstack-kurssi",
+  "version": "1.0.0",
+  "description": "- Full Stack Open -websovelluskehitys kurssin palautusrepositorio",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.29"
+  },
+  "dependencies": {
+    "fullstack-kurssi": "file:"
+  }
+}
