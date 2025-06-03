@@ -47,7 +47,7 @@ describe("Blog app", () => {
       await page.getByText("login").click();
     });
 
-    test.only("a new blog can be created", async ({ page }) => {
+    test("a new blog can be created and liked", async ({ page }) => {
       await page.getByText("New Blog").click();
       await page.getByTestId("title-input").fill("testblog");
       await page.getByTestId("author-input").fill("tester");
@@ -57,6 +57,11 @@ describe("Blog app", () => {
       const messageDiv = await page.locator(".user-message");
       await expect(messageDiv).toContainText("testblog by tester added");
       await expect(page.getByText("testblog tester")).toBeVisible();
+
+      await page.getByRole("button", { name: "view" }).click();
+      await page.getByRole("button", { name: "like" }).click();
+      await expect(page.getByText("likes 1")).toBeVisible();
+      await expect(messageDiv).toContainText("testblog updated");
     });
   });
 });

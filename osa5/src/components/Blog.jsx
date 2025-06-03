@@ -20,7 +20,6 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
       author: blog.author,
       url: blog.url,
       likes: blog.likes + 1,
-      user: user.id,
     });
   };
 
