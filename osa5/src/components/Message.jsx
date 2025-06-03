@@ -16,12 +16,11 @@ const Message = ({ message, type }) => {
     marginBottom: "10px",
   };
 
-  return <div style={messageStyle}>{message}</div>;
-};
-
-Message.propTypes = {
-  message: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["success", "error"]),
+  return (
+    <div style={messageStyle} className="user-message">
+      {message}
+    </div>
+  );
 };
 
 export default Message;

@@ -18,4 +18,25 @@ describe("Blog app", () => {
     await expect(page.getByTestId("username-input")).toBeVisible();
     await expect(page.getByTestId("password-input")).toBeVisible();
   });
+
+  describe("Login", () => {
+    test("succeeds with correct credentials", async ({ page }) => {
+      await page.getByTestId("username-input").fill("mluukkai");
+      await page.getByTestId("password-input").fill("salainen");
+      await page.getByText("login").click();
+      await expect(page.getByText("Matti Luukkainen logged in")).toBeVisible();
+    });
+
+    test("fails with wrong credentials", async ({ page }) => {
+      await page.getByTestId("username-input").fill("msdfsdfsdf");
+      await page.getByTestId("password-input").fill("ssdfsdfsdf");
+      await page.getByText("login").click();
+
+      await expect(
+        page.getByText("Matti Luukkainen logged in")
+      ).not.toBeVisible();
+      const messageDiv = await page.locator(".user-message");
+      await expect(messageDiv).toContainText("invalid username or password");
+    });
+  });
 });

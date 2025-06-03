@@ -41,7 +41,7 @@ const App = () => {
     } catch (exception) {
       console.log("[DEBUG] Error occured when adding notes!");
       console.log(exception);
-      setTimedMessage("error: " + exception.response.data.error);
+      setTimedMessage("error", exception.response.data.error);
     }
   };
 
@@ -60,7 +60,7 @@ const App = () => {
     } catch (exception) {
       console.log("[DEBUG] Error occured when updating notes!");
       console.log(exception);
-      setTimedMessage("error: " + exception.response.data.error);
+      setTimedMessage("error", exception.response.data.error);
     }
   };
 
@@ -78,7 +78,7 @@ const App = () => {
     } catch (exception) {
       console.log("[DEBUG] Error occured when deleting notes!");
       console.log(exception);
-      setTimedMessage("error: " + exception.response.data.error);
+      setTimedMessage("error", exception.response.data.error);
     }
   };
 
@@ -101,7 +101,7 @@ const App = () => {
     } catch (exception) {
       console.log("[DEBUG] Error occured when logging in!");
       console.log(exception);
-      setTimedMessage("error: " + exception.response.data.error);
+      setTimedMessage("error", exception.response.data.error);
     }
   };
 
