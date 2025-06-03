@@ -116,5 +116,45 @@ describe("Blog app", () => {
         blogElement.getByRole("button", { name: "delete" })
       ).toHaveCount(0);
     });
+
+    test("blogs are ordered by likes", async ({ page }) => {
+      await page.getByText("New Blog").click();
+      await page.getByTestId("title-input").fill("testblog1");
+      await page.getByTestId("author-input").fill("tester1");
+      await page.getByTestId("url-input").fill("test1.com");
+      await page.getByRole("button", { name: "create" }).click();
+
+      await expect(page.locator(".user-message")).toContainText(
+        "testblog1 by tester1 added"
+      );
+
+      await page.getByText("New Blog").click();
+      await page.getByTestId("title-input").fill("testblog2");
+      await page.getByTestId("author-input").fill("tester2");
+      await page.getByTestId("url-input").fill("test2.com");
+      await page.getByRole("button", { name: "create" }).click();
+
+      await expect(page.locator(".user-message")).toContainText(
+        "testblog2 by tester2 added"
+      );
+
+      const viewButtons = page.getByRole("button", { name: "view" });
+      await viewButtons.nth(1).click();
+      const blog2 = page.getByText("testblog2 tester2").locator("..");
+
+      for (let i = 0; i < 3; i++) {
+        await blog2.getByRole("button", { name: "like" }).click();
+        await page.waitForTimeout(200);
+      }
+
+      await expect(blog2.getByText("likes 3")).toBeVisible();
+      await expect(page.getByText("testblog1 tester1")).toBeVisible();
+      await expect(page.getByText("testblog2 tester2")).toBeVisible();
+      const blogs = page.locator(".blog");
+      const blogTexts = await blogs.allTextContents();
+      expect(blogTexts[0]).toContain("testblog2 tester2");
+      expect(blogTexts[1]).toContain("testblog1 tester1");
+      await expect(blogs).toHaveCount(2);
+    });
   });
 });
