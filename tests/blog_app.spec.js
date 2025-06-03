@@ -63,5 +63,30 @@ describe("Blog app", () => {
       await expect(page.getByText("likes 1")).toBeVisible();
       await expect(messageDiv).toContainText("testblog updated");
     });
+
+    test("a blog can be removed by the user who created it", async ({
+      page,
+    }) => {
+      await page.getByText("New Blog").click();
+      await page.getByTestId("title-input").fill("testblog");
+      await page.getByTestId("author-input").fill("tester");
+      await page.getByTestId("url-input").fill("test.com");
+      await page.getByRole("button", { name: "create" }).click();
+
+      const messageDiv = page.locator(".user-message");
+      await expect(messageDiv).toContainText("testblog by tester added");
+
+      const blogElement = page.getByText("testblog by tester").locator("..");
+      await blogElement.getByRole("button", { name: "view" }).click();
+
+      page.once("dialog", async (dialog) => {
+        expect(dialog.message()).toContain("Remove blog testblog by tester");
+        await dialog.accept();
+      });
+
+      await blogElement.getByRole("button", { name: "delete" }).click();
+
+      await expect(page.getByText("testblog by tester")).toHaveCount(0);
+    });
   });
 });
