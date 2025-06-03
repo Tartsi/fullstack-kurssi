@@ -10,6 +10,13 @@ describe("Blog app", () => {
         password: "salainen",
       },
     });
+    await request.post("http://localhost:3003/api/users", {
+      data: {
+        name: "Toinen Kayttaja",
+        username: "toinenKayttaja",
+        password: "salainen",
+      },
+    });
 
     await page.goto("http://localhost:5173");
   });
@@ -87,6 +94,27 @@ describe("Blog app", () => {
       await blogElement.getByRole("button", { name: "delete" }).click();
 
       await expect(page.getByText("testblog by tester")).toHaveCount(0);
+    });
+
+    test("a blog cannot be removed by another user", async ({ page }) => {
+      await page.getByText("New Blog").click();
+      await page.getByTestId("title-input").fill("testblog");
+      await page.getByTestId("author-input").fill("tester");
+      await page.getByTestId("url-input").fill("test.com");
+      await page.getByRole("button", { name: "create" }).click();
+
+      await page.getByText("logout").click();
+      await page.getByTestId("username-input").fill("toinenKayttaja");
+      await page.getByTestId("password-input").fill("salainen");
+      await page.getByText("login").click();
+
+      await expect(page.getByText("Toinen Kayttaja logged in")).toBeVisible();
+      await expect(page.getByText("testblog tester")).toBeVisible();
+      const blogElement = page.getByText("testblog by tester").locator("..");
+      await blogElement.getByRole("button", { name: "view" }).click();
+      await expect(
+        blogElement.getByRole("button", { name: "delete" })
+      ).toHaveCount(0);
     });
   });
 });
