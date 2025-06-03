@@ -175,20 +175,20 @@ const App = () => {
           {logOutForm()}
           <h2>create new</h2>
           {noteForm()}
-          <br />
-          {[...blogs]
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                likeBlog={likeBlog}
-                deleteBlog={deleteBlog}
-                user={user}
-              />
-            ))}
         </>
       )}
+      <br />
+      {[...blogs]
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            likeBlog={likeBlog}
+            deleteBlog={deleteBlog}
+            user={user}
+          />
+        ))}
     </div>
   );
 };
